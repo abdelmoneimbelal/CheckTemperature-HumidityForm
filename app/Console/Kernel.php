@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->command('app:store-data-record-command')->everyTenSeconds();
+        $schedule->command('app:store-data-record-command')->everyMinute()->runInBackground();
         // $schedule->call(function () {
         //     // احصل على جميع المخازن
         //     $stores = Store::all();
