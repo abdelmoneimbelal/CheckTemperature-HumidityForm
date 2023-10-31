@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Form;
+use App\Models\Store;
 use App\Models\TemperatureHumidity;
 use Illuminate\Console\Command;
 
@@ -27,19 +27,17 @@ class StoreDataRecordCommand extends Command
      */
     public function handle()
     {
-        $forms = Form::all(); // استرجاع جميع المخازن
-        foreach ($forms as $form) {
-            // قم بتسجيل بيانات المخزن هنا
-            $formData = new TemperatureHumidity([
-                'form_id' => $form->id,
-                'name' => 'marwa mousa', // توقيت التسجيل الحالي
-                'time' => now(), // توقيت التسجيل الحالي
-                'temp' => 23, // قيمة درجة الحرارة الحالية,
-                'humidity' => 50, // قيمة درجة الرطوبة الحالية,
-                'notes' => '',     // الملاحظة إذا كانت مطلوبة
-            ]);
+            // احصل على جميع المخازن
+            $stores = Store::all();
 
-            $formData->save();
-        }
+            foreach ($stores as $store) {
+                $reading = new TemperatureHumidity();
+                $reading->store_id = $store->id;
+                $reading->signature = 'Marwa Mousa';
+                $reading->temp = rand(15, 25); // قم بتغيير القيمة إلى درجة الحرارة الفعلية
+                $reading->humidity = rand(20, 60); // قم بتغيير القيمة إلى رطوبة الهواء الفعلية
+                $reading->time = now();
+                $reading->save();
+            }
     }
 }
